@@ -4,6 +4,7 @@ from httplib2 import Http
 from oauth2client import file, client, tools
 import datetime
 import pprint
+import y2018 # can't name a module 2018
 
 PERIOD_TEXT = "Period"
 
@@ -28,6 +29,9 @@ while True:
     if page_token is None:
         break
 
-for event in all_events: #list of dictionaries
-    if PERIOD_TEXT in event['summary']:
-        print(event['start']['dateTime'], event['summary'])
+period_events = [x for x in all_events if PERIOD_TEXT in x['summary']]
+
+for period_event in period_events: #list of dictionaries
+        print(period_event['start']['dateTime'], period_event['summary'])
+
+print (len(period_events))
