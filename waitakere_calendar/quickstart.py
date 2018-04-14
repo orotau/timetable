@@ -5,7 +5,7 @@ from oauth2client import file, client, tools
 import datetime
 
 # Setup the Calendar API
-SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
+SCOPES = 'https://www.googleapis.com/auth/calendar' # read / write
 store = file.Storage('credentials.json')
 creds = store.get()
 if not creds or creds.invalid:
