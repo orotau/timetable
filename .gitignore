@@ -1,0 +1,7 @@
+*.pyc
+*.pyo
+*.db
+.DS_Store
+.coverage
+*~
+waitakere_calendar/*.json
