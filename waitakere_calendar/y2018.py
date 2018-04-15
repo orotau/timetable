@@ -65,7 +65,7 @@ for term_counter in [1, 2, 3, 4]:
         end_date = datetime.strptime(end_date, '%A %d %B %Y')
 
         school_days = np.busday_count( start_date, end_date, holidays = no_school_dates) + 1 # + 1 includes the end date
-        # print(term_counter, school_days)
+        print(term_counter, school_days)
 
         start_line = [x.line for x in tdls if x.term == term_counter][0]
         expected_end_line = utils.get_end_line(start_line, school_days)
