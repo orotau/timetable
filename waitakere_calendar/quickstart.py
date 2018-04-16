@@ -2,12 +2,14 @@ from __future__ import print_function
 from apiclient.discovery import build
 from httplib2 import Http
 from oauth2client import file, client, tools
-from datetime import datetime
+from datetime import datetime, date
 import pprint
 import numpy as np
 import y2018 # can't name a module 2018
+import utils
 from dateutil.rrule import rrule, DAILY
 from itertools import compress, cycle, islice
+import iso8601 #http://pyiso8601.readthedocs.io/en/latest/
 
 PERIOD_TEXT = "Period"
 
@@ -53,6 +55,7 @@ def get_teaching_dates_for_term(term):
 
     teaching_dates_filter = np.is_busday(all_dates, holidays=no_school_dates)
     teaching_dates = list(compress(all_dates, teaching_dates_filter))
+    teaching_dates = [x.date() for x in teaching_dates] # convert to dates from datetimes
     return teaching_dates
 
 def get_teaching_dates_and_day_number(term):
@@ -68,6 +71,40 @@ def get_teaching_dates_and_day_number(term):
         line_to_use = next(adjusted_lines)
         teaching_dates_and_day_number.append((teaching_date, line_to_use))
     return teaching_dates_and_day_number
+
+def get_periods_for_line(term, line):
+    periods_for_line = []
+    all_periods = get_all_periods_in_primary_calendar()
+    teaching_dates_and_day_number = get_teaching_dates_and_day_number(term)
+    for teaching_date, day_number in teaching_dates_and_day_number:
+        periods_for_teaching_date = []
+        for period in all_periods:
+            # get the 5 periods for that teaching_date
+            start_datetime = iso8601.parse_date(period['start']['dateTime'])
+            start_date = start_datetime.date()
+            if start_date == teaching_date:
+                periods_for_teaching_date.append(period)
+        assert len(periods_for_teaching_date) == 5 # check
+        # we have the 5 periods (events in the calendar) for the teaching date
+        period_for_line = utils.get_period_for_line(day_number, line)
+        if period_for_line is None:
+            pass # do nothing as there is no period on that day that covers the line
+        else:
+            for period in periods_for_teaching_date:
+                if period['summary'].endswith(str(period_for_line)):
+                    periods_for_line.append(period)
+                    break
+
+    periods_for_line.sort(key=lambda e: iso8601.parse_date(e['start']['dateTime']))
+    return periods_for_line
+
+def update_color_for_line(term, line):
+    periods_for_line = get_periods_for_line(term, line)
+    
+    for period in periods_for_line:
+        period["colorId"] = "7"
+        updated_event = service.events().update(calendarId='primary', eventId=period['id'], body=period).execute()
+
     
 
 if __name__ == '__main__':
@@ -94,6 +131,18 @@ if __name__ == '__main__':
     get_teaching_dates_and_day_number_parser = subparsers.add_parser('get_teaching_dates_and_day_number')
     get_teaching_dates_and_day_number_parser.add_argument('term', type=int, choices = [1, 2, 3, 4])
     get_teaching_dates_and_day_number_parser.set_defaults(function = get_teaching_dates_and_day_number)
+
+    # create the parser for the get_periods_for_line
+    get_periods_for_line_parser = subparsers.add_parser('get_periods_for_line')
+    get_periods_for_line_parser.add_argument('term', type=int, choices = [1, 2, 3, 4])
+    get_periods_for_line_parser.add_argument('line', type=int, choices = [1, 2, 3, 4, 5, 6])
+    get_periods_for_line_parser.set_defaults(function = get_periods_for_line)
+
+    # create the parser for the update_color_for_line
+    update_color_for_line_parser = subparsers.add_parser('update_color_for_line')
+    update_color_for_line_parser.add_argument('term', type=int, choices = [1, 2, 3, 4])
+    update_color_for_line_parser.add_argument('line', type=int, choices = [1, 2, 3, 4, 5, 6])
+    update_color_for_line_parser.set_defaults(function = update_color_for_line)
 
     # parse the arguments
     arguments = parser.parse_args()
@@ -122,4 +171,8 @@ if __name__ == '__main__':
 
     result = function_to_call(**arguments) #note **arguments works fine for empty dict {}
    
-    pprint.pprint (result)
+    for r in result:
+        #print(datetime.strftime(iso8601.parse_date(r['start']['dateTime']), '%A %d %B %Y'), r['summary'])
+        print (r)
+
+

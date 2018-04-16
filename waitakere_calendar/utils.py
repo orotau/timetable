@@ -72,3 +72,22 @@ def get_end_line(start_line, number_of_school_days):
         end_line = end_line_first_go
 
     return end_line
+
+def get_period_for_line(day_number, line_number):
+    # given a day number and line number
+    # return the period for that line number
+    # if no period then return None
+
+    day = {}
+    day[1] = (1, 2, 3, 4, 5)
+    day[2] = (6, 1, 2, 3, 4)
+    day[3] = (5, 6, 1, 2, 3)
+    day[4] = (4, 5, 6, 1, 2)
+    day[5] = (3, 4, 5, 6, 1)
+    day[6] = (2, 3, 4, 5, 6)
+
+    if line_number not in day[day_number]:
+        return None
+    else:
+        return day[day_number].index(line_number) + 1
+
