@@ -1,6 +1,6 @@
-def get_end_line(start_line, number_of_school_days):
+def get_end_day_number(start_day_number, number_of_school_days):
     '''
-    given the start line and the number of school days returns the end line
+    given the start day_number and the number of school days returns the end day_number
 
     The school days *do not* include holidays or weekends
 
@@ -8,52 +8,52 @@ def get_end_line(start_line, number_of_school_days):
 
     If number_of_school_days is an exact multiple of 6 then number of days left over = 0
     In this case .....
-    Start 1 End 6
-    Start 2 End 1
-    Start 3 End 2
-    Start 4 End 3
-    Start 5 End 4
-    Start 6 End 5
+    Start_Day_Number 1 , End_Day_Number 6
+    Start_Day_Number 2 , End_Day_Number 1
+    Start_Day_Number 3 , End_Day_Number 2
+    Start_Day_Number 4 , End_Day_Number 3
+    Start_Day_Number 5 , End_Day_Number 4
+    Start_Day_Number 6 , End_Day_Number 5
 
     If number of days left over = 1
-    Start 1 End 1
-    Start 2 End 2
-    Start 3 End 3
-    Start 4 End 4
-    Start 5 End 5
-    Start 6 End 6
+    Start_Day_Number 1 , End_Day_Number 1
+    Start_Day_Number 2 , End_Day_Number 2
+    Start_Day_Number 3 , End_Day_Number 3
+    Start_Day_Number 4 , End_Day_Number 4
+    Start_Day_Number 5 , End_Day_Number 5
+    Start_Day_Number 6 , End_Day_Number 6
 
     If number of days left over = 2
-    Start 1 End 2
-    Start 2 End 3
-    Start 3 End 4
-    Start 4 End 5
-    Start 5 End 6
-    Start 6 End 1
+    Start_Day_Number 1 , End_Day_Number 2
+    Start_Day_Number 2 , End_Day_Number 3
+    Start_Day_Number 3 , End_Day_Number 4
+    Start_Day_Number 4 , End_Day_Number 5
+    Start_Day_Number 5 , End_Day_Number 6
+    Start_Day_Number 6 , End_Day_Number 1
 
     If number of days left over = 3
-    Start 1 End 3
-    Start 2 End 4
-    Start 3 End 5
-    Start 4 End 6
-    Start 5 End 1
-    Start 6 End 2
+    Start_Day_Number 1 , End_Day_Number 3
+    Start_Day_Number 2 , End_Day_Number 4
+    Start_Day_Number 3 , End_Day_Number 5
+    Start_Day_Number 4 , End_Day_Number 6
+    Start_Day_Number 5 , End_Day_Number 1
+    Start_Day_Number 6 , End_Day_Number 2
 
     If number of days left over = 4
-    Start 1 End 4
-    Start 2 End 5
-    Start 3 End 6
-    Start 4 End 1
-    Start 5 End 2
-    Start 6 End 3
+    Start_Day_Number 1 , End_Day_Number 4
+    Start_Day_Number 2 , End_Day_Number 5
+    Start_Day_Number 3 , End_Day_Number 6
+    Start_Day_Number 4 , End_Day_Number 1
+    Start_Day_Number 5 , End_Day_Number 2
+    Start_Day_Number 6 , End_Day_Number 3
 
     If number of days left over = 5
-    Start 1 End 5
-    Start 2 End 6
-    Start 3 End 1
-    Start 4 End 2
-    Start 5 End 3
-    Start 6 End 4
+    Start_Day_Number 1 , End_Day_Number 5
+    Start_Day_Number 2 , End_Day_Number 6
+    Start_Day_Number 3 , End_Day_Number 1
+    Start_Day_Number 4 , End_Day_Number 2
+    Start_Day_Number 5 , End_Day_Number 3
+    Start_Day_Number 6 , End_Day_Number 4
 '''
 
     cycles = divmod(number_of_school_days, 6)[0] # not used
@@ -64,14 +64,14 @@ def get_end_line(start_line, number_of_school_days):
     else:
         days_to_add = days_left_over - 1
 
-    end_line_first_go = start_line + days_to_add
+    end_day_number_first_go = start_day_number + days_to_add
 
-    if end_line_first_go > 6:
-        end_line = divmod(end_line_first_go, 6)[1]
+    if end_day_number_first_go > 6:
+        end_day_number = divmod(end_day_number_first_go, 6)[1]
     else:
-        end_line = end_line_first_go
+        end_day_number = end_day_number_first_go
 
-    return end_line
+    return end_day_number
 
 def get_period_for_line(day_number, line_number):
     # given a day number and line number
