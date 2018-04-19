@@ -46,7 +46,6 @@ for each in tdd_ns:
      datetime.strptime(each.dayte, '%A %d %B %Y')
 
 # check the end day_number is consistent with the start day_number for each term
-
 for term_counter in [1, 2, 3, 4]:
 
         # as string

@@ -64,6 +64,7 @@ def get_teaching_dates_and_day_number(term):
     '''
     teaching_dates_and_day_number = []
     teaching_dates = get_teaching_dates_for_term(term)
+
     start_day_number = [x.day_number for x in y2018.tdd_ns if x.term == term][0]
     day_numbers = cycle([1, 2, 3, 4, 5, 6]) 
     adjusted_day_numbers = islice(day_numbers, start_day_number - 1, None)
