@@ -22,6 +22,28 @@ if not creds or creds.invalid:
     creds = tools.run_flow(flow, store)
 service = build('calendar', 'v3', http=creds.authorize(Http()))
 
+# get the ids and names of each calendar
+calendars = []
+
+page_token = None
+while True:
+  calendar_list = service.calendarList().list(pageToken=page_token, showHidden=True).execute()
+  for calendar_list_entry in calendar_list['items']:
+    calendars.append(calendar_list_entry)
+  page_token = calendar_list.get('nextPageToken')
+  if not page_token:
+    break
+
+calendar = {
+    'summary': 'calendarSummary',
+    'timeZone': 'Pacific/Auckland'
+}
+
+created_calendar = service.calendars().insert(body=calendar).execute()
+
+print (created_calendar['id'])
+
+'''
 event = {
   'summary': 'Period 1 - Line 2',
   #'transparency':'transparent', # if you want this to appear Free
@@ -43,3 +65,4 @@ event = {
 #conferenceDataVersion = 1 removes any conference data (found by trial and error)
 event = service.events().insert(calendarId='primary', body=event, conferenceDataVersion=1).execute()
 pprint.pprint (event)
+'''
