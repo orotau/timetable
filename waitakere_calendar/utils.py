@@ -91,3 +91,70 @@ def get_period_for_line(day_number, line_number):
     else:
         return day[day_number].index(line_number) + 1
 
+def get_line_for_period(day_number, period):
+    # given a day number and period
+    # return the line for that period number
+
+    day = {}
+    day[1] = (1, 2, 3, 4, 5)
+    day[2] = (6, 1, 2, 3, 4)
+    day[3] = (5, 6, 1, 2, 3)
+    day[4] = (4, 5, 6, 1, 2)
+    day[5] = (3, 4, 5, 6, 1)
+    day[6] = (2, 3, 4, 5, 6)
+
+    return day[day_number][period - 1]
+
+
+def get_color_for_line(line):
+
+    '''
+    given the line return the colorid
+    See https://github.com/orotau/timetable/blob/development/google_calendar_event_colors.PNG
+
+    Basically following a rainbow but too overwhelming if it is coloured like that
+    Consequenty those lines in which I am not teaching are colored Graphite
+    Red - Line 1
+    Orange - Line 2
+    Yellow - Line 3
+    Green - Line 4
+    Blue - Line 5
+    Indigo/Violet - Line 6
+    '''
+
+    LINE_COLOR_IDS = {}
+    # LINE_COLOR_IDS[1] = "11"    # Tomato
+    LINE_COLOR_IDS[1] = "8"    # Graphite (used specifically for me)
+    # LINE_COLOR_IDS[2] = "6"      # Tangerine
+    LINE_COLOR_IDS[2] = "8"    # Graphite (used specifically for me)
+    LINE_COLOR_IDS[3] = "5"      # Banana (Room 2 in 2018)
+    LINE_COLOR_IDS[4] = "10"    # Basil (Maths in 2018)
+    LINE_COLOR_IDS[5] = "7"      # Peacock (Topic in 2018)
+    # LINE_COLOR_IDS[6] = "3"      # Grape
+    LINE_COLOR_IDS[6] = "8"    # Graphite (used specifically for me)
+
+    return LINE_COLOR_IDS[line]
+
+def create_event(summary_text, colorId, start_datetime, end_datetime, new_calendar_id, service):
+    event = {
+      'summary': summary_text,
+      'colorId': colorId,
+      #'transparency':'transparent', # if you want this to appear Free
+      'start': {
+        #'date':'2018-04-19',
+        'dateTime': start_datetime,
+        'timeZone': 'Pacific/Auckland',
+      },
+      'end': {
+        #'date':'2018-04-19',
+        'dateTime': end_datetime,
+        'timeZone': 'Pacific/Auckland',
+      },
+      'reminders': {
+        'useDefault':'False',
+      },
+    }
+
+    #conferenceDataVersion = 1 removes any conference data (found by trial and error)
+    event = service.events().insert(calendarId=new_calendar_id, body=event, conferenceDataVersion=1).execute()
+    return event
