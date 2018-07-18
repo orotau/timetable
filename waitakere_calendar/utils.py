@@ -141,13 +141,33 @@ def create_event(summary_text, colorId, start_datetime, end_datetime, new_calend
       'colorId': colorId,
       #'transparency':'transparent', # if you want this to appear Free
       'start': {
-        #'date':'2018-04-19',
         'dateTime': start_datetime,
         'timeZone': 'Pacific/Auckland',
       },
       'end': {
-        #'date':'2018-04-19',
         'dateTime': end_datetime,
+        'timeZone': 'Pacific/Auckland',
+      },
+      'reminders': {
+        'useDefault':'False',
+      },
+    }
+
+    #conferenceDataVersion = 1 removes any conference data (found by trial and error)
+    event = service.events().insert(calendarId=new_calendar_id, body=event, conferenceDataVersion=1).execute()
+    return event
+
+def create_all_day_event(summary_text, colorId, dayte, new_calendar_id, service):
+    event = {
+      'summary': summary_text,
+      'colorId': colorId,
+      #'transparency':'transparent', # if you want this to appear Free
+      'start': {
+        'date':dayte,
+        'timeZone': 'Pacific/Auckland',
+      },
+      'end': {
+        'date':dayte,
         'timeZone': 'Pacific/Auckland',
       },
       'reminders': {
