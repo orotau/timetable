@@ -1,0 +1,15 @@
+How to run
+
+Start the virtual environment waitakere_calendar
+Go to the folder ~/PythonProjects/waitakere_calendar/waitakere_calendar$ 
+This will create the calendar for term 3 "python waitakere.py create_term_calendar 3" (no inverted commas)
+
+You DON'T need to worry about any overwriting because a brand new calendar is created with a timestamp
+added to the end of the name.
+
+This will work for the year 2018 (terms 1 through to 4)
+
+For 2019 a few things will need to change
+
+Create y2019.py with the appropriate data
+Change all references to 2018 in waitakere.py to 2019, that should do it
