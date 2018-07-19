@@ -2,7 +2,7 @@ How to run
 
 Start the virtual environment waitakere_calendar
 Go to the folder ~/PythonProjects/waitakere_calendar/waitakere_calendar$ 
-This will create the calendar for term 3 "python waitakere.py create_term_calendar 3" (no inverted commas)
+This will create the calendar for term 3 "python calendar.py create_term_calendar 3" (no inverted commas)
 
 You DON'T need to worry about any overwriting because a brand new calendar is created with a timestamp
 added to the end of the name.
@@ -13,3 +13,14 @@ For 2019 a few things will need to change
 
 Create y2019.py with the appropriate data
 Change all references to 2018 in waitakere.py to 2019, that should do it
+
+Just before I moved on to the next project I altered the name of waitakere.py to calendar.py
+and it stopped working - don't know why
+
+I tried a couple of solutions, but failed, a bit lost but this is making me think I should keep
+the calendar function and the planning separate!
+
+This is the post that led to me chaning line 2 in waitakere.py
+https://stackoverflow.com/questions/18267749/importerror-no-module-named-apiclient-discovery
+
+I will just stick with that as it doesn't seem to have done any harm
